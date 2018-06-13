@@ -10,7 +10,7 @@ Currently only supports the below listed materials as defined within the applica
 
 # Background:
 This is a project inspired by a university EE assignment given to a colleague of mine, and I am using it (along with other projects) as valuable and dynamic learning tools for Python development.
-In its current state, it provides limited functionality on a decent variety of materials; however, I plan to implement many changes and improvements as I move on (such as OOP & custom materials).
+In its current state, it provides limited functionality on a decent variety of materials; however, I plan to implement changes and improvements as I move on (such as OOP & custom materials).
 
 
 # Please note:
