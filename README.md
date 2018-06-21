@@ -19,10 +19,11 @@ Once a valid material is provided, a function runs that uses the selected materi
 
 {material: [0] = εᵣ (Relative Permittivity), [1] = σ (Conductivity Constant), [2] = μᵣ (Relative Permeability)}
 
-Currently, it only supports the below listed materials as defined within the script; however, I plan to eventually add functionality to allow users to add additional materials with specified εᵣ, σ, and μᵣ values:
+   *Currently, it only supports the below listed materials as defined within the script; however, I plan to eventually add 
+   functionality to allow users to add additional materials with specified εᵣ, σ, and μᵣ values:*
 
-   Air, Fresh Water, Sea Water, Ice, Clay, Saturated Sand, Barium Titanate, Cold Rolled Steel, Purified Iron, Mu Metal, 2-81
-   Permalloy, Copper, Gold, Aluminum, Tungsten, Graphite, Diamond, Silicon, Glass, Kiln Dried Wood & PTFE (Teflon).
+   *Air, Fresh Water, Sea Water, Ice, Clay, Saturated Sand, Barium Titanate, Cold Rolled Steel, Purified Iron, Mu Metal, 2-81
+   Permalloy, Copper, Gold, Aluminum, Tungsten, Graphite, Diamond, Silicon, Glass, Kiln Dried Wood & PTFE (Teflon).*
 
 Once a material has been given, the next prompt will ask you to specify the operating frequency the material is running at. The calculations then process, and return the relevant results.
 
