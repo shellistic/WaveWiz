@@ -29,9 +29,9 @@ def main_funct(mat):
     """
     Main Function [main_funct()] takes the material provided in 'main_prompt'
     and uses it as an arguement for this function.
-    * * Example: * *
+    * Example:
     If 'main_prompt' is 'air', the function will run as main_funct('air') and
-    will use airs' key values for use in the function math.
+    will plug-in its key values for use in the relevant math.
     """
     while True:
         try:
