@@ -24,6 +24,11 @@ Currently, it only supports the below listed materials as defined within the scr
    Air, Fresh Water, Sea Water, Ice, Clay, Saturated Sand, Barium Titanate, Cold Rolled Steel, Purified Iron, Mu Metal, 2-81
    Permalloy, Copper, Gold, Aluminum, Tungsten, Graphite, Diamond, Silicon, Glass, Kiln Dried Wood & PTFE (Teflon).
 
+Once a material has been given, the next prompt will ask you to specify the operating frequency the material is running at. The calculations then process, and return the relevant results.
+
+You can then chose to run another calculation by typing (Y)es, or, (N)o to quit the script (gracefully).
+
+
 
 ***
 *Please Note*
