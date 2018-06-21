@@ -1,5 +1,32 @@
 from cmath import pi, sqrt
 
+
+# Project to implement an OOP approach - ! DO NOT USE !
+#
+#[0] = εᵣ = u"\u03B5\u1D63" = "Relative Permittivity"
+#  [1] = σ = u"\u03C3" = "Conductivity Constant"
+#    [2]= μᵣ = u"\u03BC\u1D63" = "Relative Permeability"
+
+class MaterialDict(dict):
+
+    elements = 0
+
+    def __init__(self, *arg, **kw):
+        super(MaterialDict, self).__init__(*arg, **kw)
+
+    def __repr__(self):
+        if self.elements == 0:
+            return "empty material dictionary"
+        else:
+            return f"material dictionary containing {self.elements} material(s)"
+
+    def count(self):
+        if self.elements == 0:
+            return
+        return self.elements
+
+#### - Working Code Below - ####
+"""
 mat_values = {
     'air': (1, 0, 1.00000037),
     'fresh water': (80, 5e-4, 0.999992),
@@ -26,13 +53,13 @@ mat_values = {
 
 
 def main_funct(mat):
-    """
+    """"""
     Main Function [main_funct()] takes the material provided in 'main_prompt'
     and uses it as an arguement for this function.
     * Example:
     If 'main_prompt' is 'air', the function will run as main_funct('air') and
     will plug-in its key values for use in the relevant math.
-    """
+    """"""
     while True:
         try:
             freq = float(input('\nWhat frequency (in Hertz) is the material'
@@ -155,3 +182,4 @@ while True:
                 print(f'\n {main_prompt} is not a valid material.\n'
                        ' Please use a valid material listed in the'
                        ' \'help\' command.\n')
+"""
