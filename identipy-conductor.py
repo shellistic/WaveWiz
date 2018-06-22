@@ -4,6 +4,7 @@
 #  [1] = σ = u"\u03C3" = "Conductivity Constant"
 #    [2]= μᵣ = u"\u03BC\u1D63" = "Relative Permeability"
 
+
 class MaterialDict(dict):
 
     def __init__(self, *arg, **kw):
@@ -32,8 +33,7 @@ class MaterialDict(dict):
     def count(self):
         return len(self)
 
-
-test1 = MaterialDict({
+preloaded_dict = MaterialDict({
     'air': (1, 0, 1.00000037),
     'fresh water': (80, 5e-4, 0.999992),
     'sea water': (80, 3, 1),
@@ -56,10 +56,29 @@ test1 = MaterialDict({
     'kiln dried wood': (4, 1e-15, 1.000000435),
     'ptfe': (2.1, 1e-25, 1)
 })
-test1 #preloaded dictionary
-test1.count()
-test2 = MaterialDict() #empty dictionary
-test2
-test2.count()
-test1.items()
-test2.update({"TEST": (5, 5, 5)})
+
+
+prompt1 = input("Would you like to add a material "
+                "to the current material dictionary?\n"
+                "[Y]es or [N]o ").lower()
+
+if prompt1[0] == "y":
+    while True:
+        mat_name = input("OK!\nWhat is your material named? ")
+        mat_rpermit = input("What is its relative permittivity (εᵣ) value? ")
+        mat_cconst = input("What is its conductivity constant (σ) value? ")
+        mat_rpermea = input("What is its relative permeability (μᵣ) value? ")
+        is_valid = input("You are wanting to add "
+                         f"{mat_name} with a εᵣ at {mat_rpermit}, "
+                         f"σ at {mat_cconst}, and a μᵣ at {mat_rpermea}--\n"
+                         "Is this correct ([Y]es or [N]o)? ").lower()
+        if is_valid[0] == 'y':
+            print("Added your new material to the dictionary!")
+            preloaded_dict.update(
+            {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
+            )
+            break
+
+print(preloaded_dict.values())
+preloaded_dict.count()
+preloaded_dict
