@@ -1,9 +1,9 @@
 # Project to implement an OOP approach - ! DO NOT USE !
 #
-#[0] = εᵣ = u"\u03B5\u1D63" = "Relative Permittivity"
+# [0] = εᵣ = u"\u03B5\u1D63" = "Relative Permittivity"
 #  [1] = σ = u"\u03C3" = "Conductivity Constant"
-#    [2]= μᵣ = u"\u03BC\u1D63" = "Relative Permeability"
-from cmath import pi, sqrt
+#   [2]= μᵣ = u"\u03BC\u1D63" = "Relative Permeability"
+from math import pi, sqrt
 
 
 class MaterialDict(dict):
@@ -59,14 +59,14 @@ preloaded_dict = MaterialDict({
     'ptfe': (2.1, 1e-25, 1)
 })
 
-# TODO - Need to add logic to catch a blank dict entry
+# TODO - Need to add logic to catch a blank / incorrect type entries
 prompt1 = input("Would you like to add a material "
                 "to the current material dictionary?\n"
                 "[Y]es or [N]o ").lower()
 
 if prompt1[0] == "y":
     while True:
-        mat_name = input("OK!\nWhat is your material named? ")
+        mat_name = input("OK!\nWhat is your material named? ").lower()
         mat_rpermit = input("What is its relative permittivity "
                             "(\u03B5\u1D63) value? ")
         mat_cconst = input("What is its conductivity constant "
@@ -81,7 +81,7 @@ if prompt1[0] == "y":
         if is_valid[0] == 'y':
             print("Added your new material to the dictionary!")
             preloaded_dict.update(
-            {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
+                {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
             )
             break
 
@@ -91,10 +91,11 @@ preloaded_dict.count()
 print(preloaded_dict['test'][2])
 """
 
+
 def main_funct(mat):
     """
     Main Function [main_funct()] takes the material provided in 'main_prompt'
-    and uses it as an arguement for this function.
+    and uses it as an argument for this function.
     * Example:
     If 'main_prompt' is 'air', the function will run as main_funct('air') and
     will plug-in its key values for use in the relevant math.
@@ -110,7 +111,7 @@ def main_funct(mat):
 
     eo = 8.854 * 10 ** -12
     uo = 1.26 * 10 ** -6
-    w = 2 * pi * freq * mat[0] * eo
+    w = 2 * pi * freq * mat[0] * eo  # w = float(2 * pi * freq * mat[0] * eo)
     test = mat[1] / w
     if test == 0:
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
@@ -164,11 +165,11 @@ def main_funct(mat):
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
               f' acts as an Any Medium!')
         alpha = (w * (sqrt((uo * mat[2] * eo * mat[0]) *
-                           sqrt(1 + ((test) ** 2)) - 1)))
+                           sqrt(1 + (test ** 2)) - 1)))
         print('\n  The attenuation constant, alpha,'
               f' has a value of {alpha} Np/m, and ')
         beta = (w * (sqrt((uo * mat[2] * eo * mat[0]) *
-                          sqrt(1 + ((test) ** 2)) + 1)))
+                          sqrt(1 + (test ** 2)) + 1)))
         print(f'  beta has a value of {beta} rad/m.')
         nc = complex((sqrt((uo * mat[2]) / (eo * mat[0]))) *
                      sqrt((1 - (1j * test))))
@@ -182,10 +183,14 @@ def main_funct(mat):
 
 while True:
     main_prompt = (input('\nWelcome to the Conductor Calculator!\n'
-                         'For a list of pre-loaded materials '
-                         'to try, enter \'help\'.\n'
-                         'What material are you '
-                         'working with? ').lower())
+                         'A dictionary of sample materials at sample values '
+                         'to test out has been pre-loaded. To see them, type '
+                         '\'help\'.\n'
+                         'To test your own custom material and values, enter '
+                         '\'add\' to add it to the dictionary of materials.\n'
+                         'To test a material, ensure it is available in the '
+                         'dictionary and type its name in the prompt below.\n'
+                         'What material are you working with? ').lower())
     if main_prompt == 'help':
         print('\nCurrently contains the following materials:\n\n')
         print(preloaded_dict.keys())
@@ -214,5 +219,5 @@ while True:
                       ' \'help\' command.\n')
             else:
                 print(f'\n {main_prompt} is not a valid material.\n'
-                       ' Please use a valid material listed in the'
-                       ' \'help\' command.\n')
+                      ' Please use a valid material listed in the'
+                      ' \'help\' command.\n')
