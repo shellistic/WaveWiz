@@ -17,9 +17,6 @@ class MaterialDict(dict):
         else:
             return f"material dictionary containing {len(self)} material(s)"
 
-    def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-
     def update(self, *args, **kwargs):
         if args:
             if len(args) > 1:
@@ -59,38 +56,6 @@ preloaded_dict = MaterialDict({
     'ptfe': (2.1, 1e-25, 1)
 })
 
-# TODO - Need to add logic to catch a blank / incorrect type entries
-prompt1 = input("Would you like to add a material "
-                "to the current material dictionary?\n"
-                "[Y]es or [N]o ").lower()
-
-if prompt1[0] == "y":
-    while True:
-        mat_name = input("OK!\nWhat is your material named? ").lower()
-        mat_rpermit = input("What is its relative permittivity "
-                            "(\u03B5\u1D63) value? ")
-        mat_cconst = input("What is its conductivity constant "
-                           "(\u03C3) value? ")
-        mat_rpermea = input("What is its relative permeability "
-                            "(\u03BC\u1D63) value? ")
-        is_valid = input("You are trying to add:\n"
-                         f"{mat_name} with a \u03B5\u1D63 of {mat_rpermit},\n"
-                         f"\u03C3 of {mat_cconst},\n"
-                         f"and a \u03BC\u1D63 of {mat_rpermea}\n"
-                         "Is this correct ([Y]es or [N]o)? ").lower()
-        if is_valid[0] == 'y':
-            print("Added your new material to the dictionary!")
-            preloaded_dict.update(
-                {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
-            )
-            break
-
-""" tests
-print(preloaded_dict.keys())
-preloaded_dict.count()
-print(preloaded_dict['test'][2])
-"""
-
 
 def main_funct(mat):
     """
@@ -111,7 +76,7 @@ def main_funct(mat):
 
     eo = 8.854 * 10 ** -12
     uo = 1.26 * 10 ** -6
-    w = 2 * pi * freq * mat[0] * eo  # w = float(2 * pi * freq * mat[0] * eo)
+    w = 2 * pi * freq * mat[0] * eo
     test = mat[1] / w
     if test == 0:
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
@@ -195,6 +160,55 @@ while True:
         print('\nCurrently contains the following materials:\n\n')
         print(preloaded_dict.keys())
         print('Type one of the provided material names when prompted.\n')
+    elif main_prompt == 'add':
+        prompt1 = input("Would you like to add a material "
+                        "to the current material dictionary?\n"
+                        "[Y]es or [N]o ").lower()
+
+        if prompt1[0] == "y":
+            while True:
+                mat_name = input("OK!\nWhat is your material named? ").lower()
+                while True:
+                    try:
+                        mat_rpermit = float(input("What is its relative "
+                                                  "permittivity "
+                                                  "(\u03B5\u1D63) value? "))
+                    except ValueError:
+                        print(f'That is not a valid value...\n'
+                              'Please use only numbers for this value.')
+                    else:
+                        break
+                while True:
+                    try:
+                        mat_cconst = float(input("What is its conductivity "
+                                                 "constant (\u03C3) value? "))
+                    except ValueError:
+                        print(f'That is not a valid value...\n'
+                              'Please use only numbers for this value.')
+                    else:
+                        break
+                while True:
+                    try:
+                        mat_rpermea = float(input("What is its relative "
+                                                  "permeability "
+                                                  "(\u03BC\u1D63) value? "))
+                    except ValueError:
+                        print(f'That is not a valid value...\n'
+                              'Please use only numbers for this value.')
+                    else:
+                        break
+                is_valid = input("You are trying to add:\n"
+                                 f"{mat_name}\n"
+                                 f"with a \u03B5\u1D63 of {mat_rpermit},\n"
+                                 f"\u03C3 of {mat_cconst},\n"
+                                 f"and a \u03BC\u1D63 of {mat_rpermea}\n"
+                                 "Is this correct ([Y]es or [N]o)?\n").lower()
+                if is_valid[0] == 'y':
+                    print("Added your new material to the dictionary!")
+                    preloaded_dict.update(
+                        {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
+                    )
+                    break
     else:
         try:
             main_funct(preloaded_dict[main_prompt])
