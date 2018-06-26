@@ -77,67 +77,68 @@ def main_funct(mat):
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
               f' acts as a Lowless Medium!')
         alpha = 0
-        print('\n  The attenuation constant, alpha,'
-              f' has a value of {alpha} Np/m, and ')
+        print('\n  The attenuation constant, alpha, '
+              f'has a value of {round(alpha, 3)} Np/m, and ')
         beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
-        print(f'  beta has a value of {beta} rad/m.')
+        print(f'  beta has a value of {round(beta, 3)} rad/m.')
         nc = ((mat[2] * uo) / (eo * mat[0]))
         print('  The intrinsic impedance of this lowless'
-              f' medium is {nc} ohms.')
+              f' medium is {round(nc, 3)} ohms.')
         up = (1 / (mat[0] * eo * mat[2] * uo))
         lam = float(up / freq)
-        print(f'\n  The phase velocity is {up} meters per second\n'
-              f'  with a wavelength of {lam} meters.\n')
+        print(f'\n  The phase velocity is {round(up, 3)} meters per second\n'
+              f'  with a wavelength of {round(lam, 3)} meters.\n')
         input('Press Enter to continue... \n')
     elif test <= 0.01:
-        print(f'\n  While operating at {freq}Hz, {main_prompt}'
-              f' acts as a Low-Less Medium!')
+        print(f'\n  While operating at {freq}Hz, {main_prompt} '
+              f'acts as a Low-Less Medium!')
         alpha = ((mat[1] / 2) * sqrt((uo * mat[2])/(eo * mat[0])))
-        print('\n  The attenuation constant, alpha,'
-              f' has a value of {alpha} Np/m, and ')
+        print('\n  The attenuation constant, alpha, '
+              f'has a value of {round(alpha, 3)} Np/m, and ')
         beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
-        print(f'  beta has a value of {beta} rad/m.')
+        print(f'  beta has a value of {round(beta, 3)} rad/m.')
         nc = ((mat[2] * uo) / (eo * mat[0]))
-        print('  The intrinsic impedance of this low-less'
-              f' medium is {nc} ohms.')
+        print('  The intrinsic impedance of this low-less '
+              f'medium is {round(nc, 3)} ohms.')
         up = (1 / (mat[0] * eo * mat[2] * uo))
         lam = float(up / freq)
-        print(f'\n  The phase velocity is {up} meters per second\n'
-              f'  with a wavelength of {lam} meters.\n')
+        print(f'\n  The phase velocity is {round(up, 3)} meters per second\n'
+              f'  with a wavelength of {round(lam, 3)} meters.\n')
         input('Press Enter to continue... \n')
     elif test >= 100:
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
               f' acts as a Good Conductor!')
         alpha = sqrt(pi * freq * uo * mat[2] * mat[1])
-        print('\n  The attenuation constant, alpha,'
-              f' has a value of {alpha} Np/m, and ')
+        print('\n  The attenuation constant, alpha, '
+              f'has a value of {round(alpha, 3)} Np/m, and ')
         beta = sqrt(pi * freq * uo * mat[2] * mat[1])
-        print(f'  beta has a value of {beta} rad/m.')
+        print(f'  beta has a value of {round(beta, 3)} rad/m.')
         nc = complex((1 + 1j) * (alpha / mat[1]))
-        print('  The intrinsic impedance of this'
-              f' good conductor is {nc} ohms.')
+        print('  The intrinsic impedance of this '
+              f'good conductor is {nc} ohms.')
         up = sqrt(4 * pi * freq * uo * mat[2] * mat[1])
         lam = up / freq
-        print(f'\n  The phase velocity is {up} meters per second\n'
-              f'  with a wavelength of {lam} meters.\n')
+        print(f'\n  The phase velocity is {round(up, 3)} meters per second\n'
+              f'  with a wavelength of {round(lam, 3)} meters.\n')
         input('Press Enter to continue...\n')
     else:
         print(f'\n  While operating at {freq}Hz, {main_prompt}'
               f' acts as an Any Medium!')
         alpha = (w * (sqrt((uo * mat[2] * eo * mat[0]) *
                            sqrt(1 + (test ** 2)) - 1)))
-        print('\n  The attenuation constant, alpha,'
-              f' has a value of {alpha} Np/m, and ')
+        print('\n  The attenuation constant, alpha, '
+              f'has a value of {round(alpha, 3)} Np/m, and ')
         beta = (w * (sqrt((uo * mat[2] * eo * mat[0]) *
                           sqrt(1 + (test ** 2)) + 1)))
-        print(f'  beta has a value of {beta} rad/m.')
+        print(f'  beta has a value of {round(beta, 3)} rad/m.')
         nc = complex((sqrt((uo * mat[2]) / (eo * mat[0]))) *
                      sqrt((1 - (1j * test))))
-        print(f'  The intrinsic impedance of this any medium is {nc} ohms.')
+        print('  The intrinsic impedance of this any medium is '
+              f'{nc} ohms.')
         up = (w / beta)
         lam = ((2 * pi) / beta)
-        print(f'\n  The phase velocity is {up} meters per second\n'
-              f'  with a wavelength of {lam} meters.\n')
+        print(f'\n  The phase velocity is {round(up, 3)} meters per second\n'
+              f'  with a wavelength of {round(lam, 3)} meters.\n')
         input('Press Enter to continue...\n')
 
 
