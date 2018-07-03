@@ -1,14 +1,14 @@
-project-OOP (for IdentiPyConductor)
-=========================
+PyConductor
+===========
 
 
 Background
 ----------
 This was a project inspired by a university EE assignment given to a colleague of mine, and I am using it (along with other projects) as valuable and dynamic learning tools for Python development (and, unintentionally, electrical engineering). It started just being a simple script that provided functionality on a pre-defined set of materials; now, it includes a bit of OOP that allows you to add custom materials to run custom calculations for *real world* scenarios!
 
-*(Double-check the math first, please if you should so be inclined to actually use this)*
+*(Double-check the math if you actually use this)*
 
-I plan on adding additonal features to this and cleaning up this project in general over time- accept my apologies for the lack of proper documentation, lack of structure, and other bells and whistles that should go probably here.
+I plan on adding additional features to this and cleaning up this project in general over time- accept my apologies for the lack of proper documentation, lack of structure, and other bells and whistles that should definitely be here.
 
 
 What this script actually does
@@ -37,15 +37,17 @@ You can then chose to run another calculation by typing (Y)es, or, (N)o to quit 
 Changelog
 ---------
 
+- Removed 'project' from title and changed project name to just 'PyConductor' (I'm terrible with naming things)
+
 - Implemented a new '**add**' option that allows you to add a custom material to the material dictionary, which is now a subclass of the built-in **dict** type.
 
 - You can now make custom calculations using custom defined materials & values by using the new '**add**' feature.
 
-- Typo fixes
+- Typo fixes, readme corrections and additions
 
 ***
 *Please Note*
 
-I am but a novice coder, and my project(s) will definitely reflect as such.
-Questions and comments are appreciated and welcomed- however, please try to be as helpful/informative as possible if you decide to make a suggestion/comment!
+I am but a novice coder, and my project(s) will definitely reflect as such. They should improve over time, however, they are typically poorly written and not optimized whatsoever, so... please be gentle :)
+
 ***
