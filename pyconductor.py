@@ -200,7 +200,7 @@ while True:
                                  f"and a \u03BC\u1D63 of {mat_rpermea}\n"
                                  "Is this correct ([Y]es or [N]o)?\n").lower()
                 if is_valid[0] == "y":
-                    print("Added your new material to the dictionary!")
+                    print("\nAdded your new material to the dictionary!\n\n")
                     preloaded_dict.update(
                         {mat_name: (mat_rpermit, mat_cconst, mat_rpermea)}
                     )
