@@ -48,6 +48,6 @@ Changelog
 ***
 *Please Note*
 
-I am but a novice coder, and my project(s) will definitely reflect as such. They should improve over time, however, they are typically poorly written and not optimized whatsoever, so... please be gentle :)
+I am but a novice coder, and my project(s) will definitely reflect as such.
 
 ***
