@@ -29,6 +29,77 @@ class MaterialDict(dict):
     def count(self):
         return len(self)
 
+    def addmat(self):
+        while True:
+            prompt1 = input(
+                "Would you like to add a material to the current material dictionary?\n"
+                "[Y]es or [N]o ").lower()
+            if prompt1 in ("y", "yes"):
+                while True:
+                    while True:
+                        mat_name = input(
+                            "Adding a material...\nWhat is your material named? ").lower()
+                        if mat_name == "":
+                            print("\nPlease type in a material name\n")
+                        else:
+                            break
+                    while True:
+                        try:
+                            mat_rpermit = float(input(
+                                f"What is the relative permittivity (\u03B5\u1D63) of {mat_name}? "))
+                        except ValueError:
+                            print(f"You did not specify a relative permittivity, or it is invalid...\n"
+                                  "Please use only numbers for (\u03B5\u1D63)")
+                        else:
+                            break
+                    while True:
+                        try:
+                            mat_cconst = float(input(
+                                f"What is the conductivity constant (\u03C3) of {mat_name}? "))
+                        except ValueError:
+                            print(f"You did not specify a conductivity constant, or it is invalid...\n"
+                                  "Please use only numbers for (\u03C3)")
+                        else:
+                            break
+                    while True:
+                        try:
+                            mat_rpermea = float(input(
+                                f"What is the relative permeability (\u03BC\u1D63) of {mat_name}? "))
+                        except ValueError:
+                            print(f"You did not specify a relative permeability, or it is invalid...\n"
+                                  "Please use only numbers for (\u03BC\u1D63)")
+                        else:
+                            break
+                    while True:
+                        is_valid = input(
+                            f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
+                            f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n"
+                            "Is this correct ([Y]es or [N]o)?\n").lower()
+                        if is_valid == "":
+                            print(f"{yes_or_no}\n")
+                        else:
+                            break
+                    if is_valid in ("y", "yes"):
+                        print(f"\nAdded {mat_name} to the current material dictionary!\n")
+                        preloaded_dict.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
+                        break
+                break
+            elif prompt1 in ("n", "no"):
+                break
+            else:
+                print(f"{yes_or_no}\n")
+
+
+def frequency():
+    while True:
+        try:
+            freq = float(input(
+                f"At what frequency (Hz) is {main_prompt} operating? "))
+        except ValueError:
+            print("Please type in only numbers for operating frequency...")
+        else:
+            return freq
+
 
 preloaded_dict = MaterialDict(
     {
@@ -55,17 +126,6 @@ preloaded_dict = MaterialDict(
         "ptfe": (2.1, 1e-25, 1)
     }
 )
-
-
-def frequency():
-    while True:
-        try:
-            frequency = float(input(
-                f"At what frequency (Hz) is {main_prompt} operating? "))
-        except ValueError:
-            print("Please type in only numbers for operating frequency...")
-        else:
-            return frequency
 
 
 def main_funct(mat):
@@ -155,68 +215,12 @@ while True:
         print("\nType one of the provided material names when prompted.")
 
     elif main_prompt == "add":
-        while True:
-            prompt1 = input(
-                "Would you like to add a material to the current material dictionary?\n"
-                "[Y]es or [N]o ").lower()
-            if prompt1 in ("y", "yes"):
-                while True:
-                    while True:
-                        mat_name = input(
-                            "Adding a material...\nWhat is your material named? ").lower()
-                        if mat_name == "":
-                            print("\nPlease type in a material name\n")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_rpermit = float(input(
-                                f"What is the relative permittivity (\u03B5\u1D63) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a relative permittivity, or it is invalid...\n"
-                                  "Please use only numbers for (\u03B5\u1D63)")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_cconst = float(input(
-                                f"What is the conductivity constant (\u03C3) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a conductivity constant, or it is invalid...\n"
-                                  "Please use only numbers for (\u03C3)")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_rpermea = float(input(
-                                f"What is the relative permeability (\u03BC\u1D63) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a relative permeability, or it is invalid...\n"
-                                  "Please use only numbers for (\u03BC\u1D63)")
-                        else:
-                            break
-                    while True:
-                        is_valid = input(
-                            f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
-                            f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n"
-                            "Is this correct ([Y]es or [N]o)?\n").lower()
-                        if is_valid == "":
-                            print(f"{yes_or_no}\n")
-                        else:
-                            break
-                    if is_valid in ("y", "yes"):
-                        print(f"\nAdded {mat_name} to the current material dictionary!\n")
-                        preloaded_dict.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
-                        break
-                break
-            elif prompt1 in ("n", "no"):
-                break
-            else:
-                print(f"{yes_or_no}\n")
+        preloaded_dict.addmat()
 
     elif main_prompt == "quit":
         print("\nGoodbye!\n")
         quit()
+
     else:
         try:
             main_funct(preloaded_dict[main_prompt])
