@@ -57,20 +57,23 @@ preloaded_dict = MaterialDict(
 )
 
 
+def frequency():
+    while True:
+        try:
+            frequency = float(input(
+                f"At what frequency (Hz) is {main_prompt} operating? "))
+        except ValueError:
+            print("Please type in only numbers for operating frequency...")
+        else:
+            return frequency
+
+
 def main_funct(mat):
     """
     Takes a material as an argument;
     Prints the results of the defined equations based on operating frequency.
     """
-    while True:
-        try:
-            freq = float(input(
-                f"At what frequency (Hz) is {main_prompt} operating? "))
-        except ValueError:
-            print("Please type in only numbers for operating frequency...")
-        else:
-            break
-
+    freq = frequency()
     eo = 8.854 * 10 ** -12
     uo = 1.26 * 10 ** -6
     w = 2 * pi * freq * mat[0] * eo
@@ -143,7 +146,7 @@ while True:
         "of materials.\nTo try a material, ensure it is available in the dictionary and type "
         "its name in the prompt below.\n\nTo exit, simply type 'quit'.\n")
 
-    yes_or_no_error = "Please type/enter 'yes' or 'no', or simply 'y' or 'n'"
+    yes_or_no = "Please type/enter 'yes' or 'no', or simply 'y' or 'n'"
     main_prompt = input("Please input a material name or a command: ").lower()
 
     if main_prompt == "help":
@@ -198,7 +201,7 @@ while True:
                             f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n"
                             "Is this correct ([Y]es or [N]o)?\n").lower()
                         if is_valid == "":
-                            print(f"{yes_or_no_error}\n")
+                            print(f"{yes_or_no}\n")
                         else:
                             break
                     if is_valid in ("y", "yes"):
@@ -209,7 +212,7 @@ while True:
             elif prompt1 in ("n", "no"):
                 break
             else:
-                print(f"{yes_or_no_error}\n")
+                print(f"{yes_or_no}\n")
 
     elif main_prompt == "quit":
         print("\nGoodbye!\n")
@@ -226,7 +229,7 @@ while True:
                     print("\nGoodbye!\n")
                     quit()
                 elif again_prompt == "":
-                    print(yes_or_no_error)
+                    print(yes_or_no)
                 else:
                     print(f"I didn't quite understand what you meant by '{again_prompt}'...")
         except KeyError:
