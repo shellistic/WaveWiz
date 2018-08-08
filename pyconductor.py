@@ -76,60 +76,60 @@ def main_funct(mat):
     w = 2 * pi * freq * mat[0] * eo
     test = mat[1] / w
     if test == 0:
+        conductor_type = "lowless medium"
         alpha = 0
         beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
         nc = ((mat[2] * uo) / (eo * mat[0]))
         up = (1 / (mat[0] * eo * mat[2] * uo))
         lam = float(up / freq)
         print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a Lowless Medium!\n\n"
+            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
             f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
             f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"lowless medium is {round(nc, 3)} ohms.\nThe phase velocity is {round(up, 3)} "
+            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
             f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
         input('Press any key to continue...')
     elif test <= 0.01:
+        conductor_type = "low-less medium"
         alpha = ((mat[1] / 2) * sqrt((uo * mat[2]) / (eo * mat[0])))
         beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
         nc = ((mat[2] * uo) / (eo * mat[0]))
         up = (1 / (mat[0] * eo * mat[2] * uo))
         lam = float(up / freq)
         print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a Low-Less Medium!\n\n"
+            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
             f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
             f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"low-less medium is {round(nc, 3)} ohms.\nThe phase velocity is {round(up, 3)} "
+            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
             f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
         input('Press any key to continue...')
     elif test >= 100:
+        conductor_type = "good conductor"
         alpha = sqrt(pi * freq * uo * mat[2] * mat[1])
         beta = sqrt(pi * freq * uo * mat[2] * mat[1])
         nc = complex((1 + 1j) * (alpha / mat[1]))
         up = sqrt(4 * pi * freq * uo * mat[2] * mat[1])
         lam = up / freq
         print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a "
-            "Good Conductor!\n\n  The attenuation constant, alpha, has a "
-            f"value of {round(alpha, 3)} Np/m, and beta has a value of "
-            f"{round(beta, 3)} rad/m.\n  The intrinsic impedance of this "
-            f"good conductor is {nc} ohms.\n  The phase velocity is "
-            f"{round(up, 3)} meters per second with a wavelength of "
-            f"{round(lam, 3)} meters.\n")
+            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
+            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
+            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
+            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
+            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
         input('Press any key to continue...')
     else:
+        conductor_type = "any medium"
         alpha = (w * (sqrt((uo * mat[2] * eo * mat[0]) * sqrt(1 + (test ** 2)) - 1)))
         beta = (w * (sqrt((uo * mat[2] * eo * mat[0]) * sqrt(1 + (test ** 2)) + 1)))
         nc = complex((sqrt((uo * mat[2]) / (eo * mat[0]))) * sqrt((1 - (1j * test))))
         up = (w / beta)
         lam = ((2 * pi) / beta)
         print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as an "
-            "Any Medium!\n  The attenuation constant, alpha, has a value "
-            f"of {round(alpha, 3)} Np/m,\n  and beta has a value of "
-            f"{round(beta, 3)} rad/m.\n  The intrinsic impedance of this "
-            f"any medium is {nc} ohms.\n  The phase velocity is "
-            f"{round(up, 3)} meters per second\n  with a wavelength of "
-            f"{round(lam, 3)} meters.\n")
+            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
+            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
+            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
+            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
+            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
         input('Press any key to continue...')
 
 
