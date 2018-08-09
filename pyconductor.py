@@ -1,6 +1,10 @@
 from math import pi, sqrt
 
 
+PERMITTIVITY = 8.854 * 10 ** -12
+PERMEABILITY = 1.26 * 10 ** -6
+
+
 class MaterialDict(dict):
 
     def __init__(self, *arg, **kw):
@@ -101,6 +105,56 @@ def frequency():
             return freq
 
 
+def calculate_conductance(mat):
+    """
+    Takes a material as an argument;
+    Prints the results of the defined equations based on operating frequency.
+    """
+    freq = frequency()
+    omega = 2 * pi * freq * mat[0] * PERMITTIVITY  # w
+    alpha_test = mat[1] / omega
+    if alpha_test == 0:
+        conductor_type = "lowless medium"
+        alpha = 0
+        beta = (omega / (sqrt(PERMEABILITY * mat[2] * PERMITTIVITY * mat[0])))
+        nc = ((mat[2] * PERMEABILITY) / (PERMITTIVITY * mat[0]))
+        up = (1 / (mat[0] * PERMITTIVITY * mat[2] * PERMEABILITY))
+        lam = float(up / freq)
+    elif alpha_test <= 0.01:
+        conductor_type = "low-less medium"
+        alpha = ((mat[1] / 2) * sqrt((PERMEABILITY * mat[2]) / (PERMITTIVITY * mat[0])))
+        beta = (omega / (sqrt(PERMEABILITY * mat[2] * PERMITTIVITY * mat[0])))
+        nc = ((mat[2] * PERMEABILITY) / (PERMITTIVITY * mat[0]))
+        up = (1 / (mat[0] * PERMITTIVITY * mat[2] * PERMEABILITY))
+        lam = float(up / freq)
+    elif alpha_test >= 100:
+        conductor_type = "good conductor"
+        alpha = sqrt(pi * freq * PERMEABILITY * mat[2] * mat[1])
+        beta = sqrt(pi * freq * PERMEABILITY * mat[2] * mat[1])
+        nc = complex((1 + 1j) * (alpha / mat[1]))
+        up = sqrt(4 * pi * freq * PERMEABILITY * mat[2] * mat[1])
+        lam = up / freq
+    else:
+        conductor_type = "any medium"
+        alpha = (omega *
+                 (sqrt((PERMEABILITY * mat[2] * PERMITTIVITY * mat[0]) *
+                       sqrt(1 + (alpha_test ** 2)) - 1)))
+        beta = (omega *
+                (sqrt((PERMEABILITY * mat[2] * PERMITTIVITY * mat[0]) *
+                      sqrt(1 + (alpha_test ** 2)) + 1)))
+        nc = complex((sqrt((PERMEABILITY * mat[2]) /
+                           (PERMITTIVITY * mat[0]))) * sqrt((1 - (1j * alpha_test))))
+        up = (omega / beta)
+        lam = ((2 * pi) / beta)
+    print(
+        f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!"
+        f"\n\nThe attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
+        f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
+        f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
+        f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
+    input('Press any key to continue...')
+
+
 preloaded_dict = MaterialDict(
     {
         "air": (1, 0, 1.00000037),
@@ -126,75 +180,6 @@ preloaded_dict = MaterialDict(
         "ptfe": (2.1, 1e-25, 1)
     }
 )
-
-
-def main_funct(mat):
-    """
-    Takes a material as an argument;
-    Prints the results of the defined equations based on operating frequency.
-    """
-    freq = frequency()
-    eo = 8.854 * 10 ** -12
-    uo = 1.26 * 10 ** -6
-    w = 2 * pi * freq * mat[0] * eo
-    test = mat[1] / w
-    if test == 0:
-        conductor_type = "lowless medium"
-        alpha = 0
-        beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
-        nc = ((mat[2] * uo) / (eo * mat[0]))
-        up = (1 / (mat[0] * eo * mat[2] * uo))
-        lam = float(up / freq)
-        print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
-            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
-            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
-        input('Press any key to continue...')
-    elif test <= 0.01:
-        conductor_type = "low-less medium"
-        alpha = ((mat[1] / 2) * sqrt((uo * mat[2]) / (eo * mat[0])))
-        beta = (w / (sqrt(uo * mat[2] * eo * mat[0])))
-        nc = ((mat[2] * uo) / (eo * mat[0]))
-        up = (1 / (mat[0] * eo * mat[2] * uo))
-        lam = float(up / freq)
-        print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
-            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
-            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
-        input('Press any key to continue...')
-    elif test >= 100:
-        conductor_type = "good conductor"
-        alpha = sqrt(pi * freq * uo * mat[2] * mat[1])
-        beta = sqrt(pi * freq * uo * mat[2] * mat[1])
-        nc = complex((1 + 1j) * (alpha / mat[1]))
-        up = sqrt(4 * pi * freq * uo * mat[2] * mat[1])
-        lam = up / freq
-        print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
-            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
-            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
-        input('Press any key to continue...')
-    else:
-        conductor_type = "any medium"
-        alpha = (w * (sqrt((uo * mat[2] * eo * mat[0]) * sqrt(1 + (test ** 2)) - 1)))
-        beta = (w * (sqrt((uo * mat[2] * eo * mat[0]) * sqrt(1 + (test ** 2)) + 1)))
-        nc = complex((sqrt((uo * mat[2]) / (eo * mat[0]))) * sqrt((1 - (1j * test))))
-        up = (w / beta)
-        lam = ((2 * pi) / beta)
-        print(
-            f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!\n\n"
-            f"The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-            f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-            f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
-            f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
-        input('Press any key to continue...')
-
 
 while True:
     print(
@@ -223,7 +208,7 @@ while True:
 
     else:
         try:
-            main_funct(preloaded_dict[main_prompt])
+            calculate_conductance(preloaded_dict[main_prompt])
             while True:
                 again_prompt = input(
                     "Would you like to try another calculation? [Y]es or [N]o: ").lower()
