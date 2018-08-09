@@ -14,8 +14,19 @@ class Material:   # TODO: Finish new Material class
         self.rel_permeability = rel_permeability
 
     def __repr__(self):
-        return self.name(self.rel_permittivity, self.conductivity_constant, self.rel_permeability)
+        return f"Material.{self.name}"
 
+    def __str__(self):
+        return f"{self.name}: "\
+        f"(\u03B5\u1D63: {self.rel_permittivity}, "\
+        f"\u03C3: {self.conductivity_constant}, "\
+        f"\u03BC\u1D63: {self.rel_permeability})"
+
+
+marble = Material("Marble", 1.2, 1, 10e-3)
+print(marble)
+marble
+type(marble)
 
 class MaterialDict(dict):
 
