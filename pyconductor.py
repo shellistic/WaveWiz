@@ -5,6 +5,18 @@ PERMITTIVITY = 8.854 * 10 ** -12
 PERMEABILITY = 1.26 * 10 ** -6
 
 
+class Material:   # TODO: Finish new Material class
+
+    def __init__(self, name, rel_permittivity, conductivity_constant, rel_permeability):
+        self.name = name
+        self.rel_permittivity = rel_permittivity
+        self.conductivity_constant = conductivity_constant
+        self.rel_permeability = rel_permeability
+
+    def __repr__(self):
+        return self.name(self.rel_permittivity, self.conductivity_constant, self.rel_permeability)
+
+
 class MaterialDict(dict):
 
     def __init__(self, *arg, **kw):
@@ -155,7 +167,7 @@ def calculate_conductance(mat):
     input('Press any key to continue...')
 
 
-preloaded_dict = MaterialDict(
+preloaded_dict = MaterialDict(   # TODO: Put preloaded_dict into function
     {
         "air": (1, 0, 1.00000037),
         "fresh water": (80, 5e-4, 0.999992),
