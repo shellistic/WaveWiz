@@ -5,28 +5,33 @@ PERMITTIVITY = 8.854 * 10 ** -12
 PERMEABILITY = 1.26 * 10 ** -6
 
 
-class Material:   # TODO: Finish new Material class
+class Material:   # TODO: getters and setters for numerical values
+    """
+    A class defining Material objects for the purpose of electrical conductivity testing.
 
-    def __init__(self, name, rel_permittivity, conductivity_constant, rel_permeability):
+    Materials need to be instantiated with the following parameters:
+
+    name == Name for the material
+    rel_permit == εᵣ == Relative Permittivity
+    cond_const == σ  == Conductivity Constant
+    rel_permea == μᵣ == Relative Permeability
+    """
+
+    def __init__(self, name, rel_permit, cond_const, rel_permea):
         self.name = name
-        self.rel_permittivity = rel_permittivity
-        self.conductivity_constant = conductivity_constant
-        self.rel_permeability = rel_permeability
+        self.rel_permit = rel_permit
+        self.cond_const = cond_const
+        self.rel_permea = rel_permea
 
     def __repr__(self):
         return f"Material.{self.name}"
 
     def __str__(self):
         return f"{self.name}: "\
-        f"(\u03B5\u1D63: {self.rel_permittivity}, "\
-        f"\u03C3: {self.conductivity_constant}, "\
-        f"\u03BC\u1D63: {self.rel_permeability})"
+        f"(\u03B5\u1D63: {self.rel_permit}, "\
+        f"\u03C3: {self.cond_const}, "\
+        f"\u03BC\u1D63: {self.rel_permea})"
 
-
-marble = Material("Marble", 1.2, 1, 10e-3)
-print(marble)
-marble
-type(marble)
 
 class MaterialDict(dict):
 
@@ -97,24 +102,19 @@ class MaterialDict(dict):
                                   "Please use only numbers for (\u03BC\u1D63)")
                         else:
                             break
+                    print(
+                    f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
+                    f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n")
                     while True:
-                        is_valid = input(
-                            f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
-                            f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n"
-                            "Is this correct ([Y]es or [N]o)?\n").lower()
-                        if is_valid == "":
-                            print(f"{yes_or_no}\n")
-                        else:
+                        is_correct = input("Is this correct ([Y]es or [N]o)?\n").lower()
+                        if is_correct in ("y", "yes"):
+                            preloaded_dict.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
+                            print(f"\nAdded {mat_name} to the current material dictionary!\n")
                             break
-                    if is_valid in ("y", "yes"):
-                        print(f"\nAdded {mat_name} to the current material dictionary!\n")
-                        preloaded_dict.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
-                        break
+                        elif is_correct in ("n", "no"):            
                 break
             elif prompt1 in ("n", "no"):
                 break
-            else:
-                print(f"{yes_or_no}\n")
 
 
 def frequency():
@@ -178,76 +178,31 @@ def calculate_conductance(mat):
     input('Press any key to continue...')
 
 
-preloaded_dict = MaterialDict(   # TODO: Put preloaded_dict into function
-    {
-        "air": (1, 0, 1.00000037),
-        "fresh water": (80, 5e-4, 0.999992),
-        "sea water": (80, 3, 1),
-        "ice": (3.5, 1e-5, 1),
-        "clay": (20, 5, 1),
-        "saturated sand": (30, 1e-4, 1),
-        "barium titanate": (3279, 1e-6, 1),
-        "cold rolled steel": (1, 1e-7, 100),
-        "purified iron": (1, 1e-7, 5e3),
-        "mu metal": (1, 1.6e6, 2e5),
-        "2-81 permalloy": (1, 1e2, 1e6),
-        "copper": (1, 5.96e7, 0.999994),
-        "gold": (1, 4.1e7, 1),
-        "aluminium": (1, 3.5e7, 1.000022),
-        "tungsten": (1, 1.79e7, 1),
-        "graphite": (12.5, 2e5, 1),
-        "diamond": (7.5, 1e-13, 0.99999975),
-        "silicon": (11.68, 1.56e-3, 1),
-        "glass": (65, 1e-15, 1),
-        "kiln dried wood": (4, 1e-15, 1.000000435),
-        "ptfe": (2.1, 1e-25, 1)
-    }
-)
-
-while True:
-    print(
-        "Welcome to the Conductor Calculator!\n"
-        "A dictionary of sample materials at sample values to test out has been pre-loaded. "
-        "To see it, type 'help'.\nThis will also list any custom materials that you have added "
-        "to the dictionary using 'add'; they will be added to the end of the dictionary.\n\n"
-        "To test your own custom material and values, enter 'add' to add it to the dictionary "
-        "of materials.\nTo try a material, ensure it is available in the dictionary and type "
-        "its name in the prompt below.\n\nTo exit, simply type 'quit'.\n")
-
-    yes_or_no = "Please type/enter 'yes' or 'no', or simply 'y' or 'n'"
-    main_prompt = input("Please input a material name or a command: ").lower()
-
-    if main_prompt == "help":
-        print("\nCurrently contains the following materials:\n")
-        print(preloaded_dict.keys())
-        print("\nType one of the provided material names when prompted.")
-
-    elif main_prompt == "add":
-        preloaded_dict.addmat()
-
-    elif main_prompt == "quit":
-        print("\nGoodbye!\n")
-        quit()
-
-    else:
-        try:
-            calculate_conductance(preloaded_dict[main_prompt])
-            while True:
-                again_prompt = input(
-                    "Would you like to try another calculation? [Y]es or [N]o: ").lower()
-                if again_prompt in ("y", "yes"):
-                    break
-                elif again_prompt in ("n", "no"):
-                    print("\nGoodbye!\n")
-                    quit()
-                elif again_prompt == "":
-                    print(yes_or_no)
-                else:
-                    print(f"I didn't quite understand what you meant by '{again_prompt}'...")
-        except KeyError:
-            if main_prompt == "":
-                print("\nNo material specified.\nPlease enter a valid material name "
-                      "listed in the 'help' command, or use 'add' to add your own.\n")
-            else:
-                print(f"\n{main_prompt} is not a valid material or command.\nPlease use a valid "
-                      "material listed in the 'help' command, or use 'add' to add your own.\n")
+def load_test_values():
+    """generates a sample MaterialDict with sample Material objects"""
+    preloaded_dict = MaterialDict(   # TODO: Put preloaded_dict into function
+        {
+            "air": (1, 0, 1.00000037),
+            "fresh water": (80, 5e-4, 0.999992),
+            "sea water": (80, 3, 1),
+            "ice": (3.5, 1e-5, 1),
+            "clay": (20, 5, 1),
+            "saturated sand": (30, 1e-4, 1),
+            "barium titanate": (3279, 1e-6, 1),
+            "cold rolled steel": (1, 1e-7, 100),
+            "purified iron": (1, 1e-7, 5e3),
+            "mu metal": (1, 1.6e6, 2e5),
+            "2-81 permalloy": (1, 1e2, 1e6),
+            "copper": (1, 5.96e7, 0.999994),
+            "gold": (1, 4.1e7, 1),
+            "aluminium": (1, 3.5e7, 1.000022),
+            "tungsten": (1, 1.79e7, 1),
+            "graphite": (12.5, 2e5, 1),
+            "diamond": (7.5, 1e-13, 0.99999975),
+            "silicon": (11.68, 1.56e-3, 1),
+            "glass": (65, 1e-15, 1),
+            "kiln dried wood": (4, 1e-15, 1.000000435),
+            "ptfe": (2.1, 1e-25, 1)
+        }
+    )
+    return preloaded_dict
