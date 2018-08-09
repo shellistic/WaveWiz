@@ -60,7 +60,7 @@ Changelog
 
 Future Plans
 ------------
-- Looking into implementing **Decimal()** (from the decimal module) for more precise arithmatic with floating point numbers.
+- Looking into implementing **Decimal()** (from the decimal module) for more precise arithmetic with floating point numbers.
 
 - Would like to see the entire script shortened/refactored where possible.
 

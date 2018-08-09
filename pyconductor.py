@@ -1,13 +1,13 @@
 from math import pi, sqrt
 
 
-PERMITTIVITY = 8.854 * 10 ** -12
-PERMEABILITY = 1.26 * 10 ** -6
+PERMITTIVITY = 8.854e-12
+PERMEABILITY = 1.26e-06
 
 
-class Material:   # TODO: getters and setters for numerical values
+class Material:   # TODO: implement getters and setters for numerical values
     """
-    A class defining Material objects for the purpose of electrical conductivity testing.
+    Class defining Material objects for the purpose of electrical conductivity testing.
 
     Materials need to be instantiated with the following parameters:
 
@@ -28,12 +28,16 @@ class Material:   # TODO: getters and setters for numerical values
 
     def __str__(self):
         return f"{self.name}: "\
-        f"(\u03B5\u1D63: {self.rel_permit}, "\
-        f"\u03C3: {self.cond_const}, "\
-        f"\u03BC\u1D63: {self.rel_permea})"
+               f"(\u03B5\u1D63: {self.rel_permit}, "\
+               f"\u03C3: {self.cond_const}, "\
+               f"\u03BC\u1D63: {self.rel_permea})"
 
 
-class MaterialDict(dict):
+class MaterialDict(dict):   # TODO: Enhance this class to add functionality on Material Objects
+    """
+    Class defining Material Dictionaries and their methods for storing groups of Material objects.
+    Subclass of builtin dict class.
+    """
 
     def __init__(self, *arg, **kw):
         super().__init__(*arg, **kw)
@@ -48,6 +52,7 @@ class MaterialDict(dict):
             return f"material dictionary containing {len(self)} material(s)"
 
     def update(self, *args, **kwargs):
+        """Logic to store MaterialDict object"""
         if args:
             if len(args) > 1:
                 raise TypeError(
@@ -59,9 +64,14 @@ class MaterialDict(dict):
             self[key] = kwargs[key]
 
     def count(self):
+        """Returns a count of materials currently inside the MaterialDict object."""
         return len(self)
 
     def addmat(self):
+        """
+        Gathers required material values from user;
+        Uses update() class method to add the material based on the values provided.
+        """
         while True:
             prompt1 = input(
                 "Would you like to add a material to the current material dictionary?\n"
@@ -103,25 +113,27 @@ class MaterialDict(dict):
                         else:
                             break
                     print(
-                    f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
-                    f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n")
+                        f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
+                        f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n")
                     while True:
                         is_correct = input("Is this correct ([Y]es or [N]o)?\n").lower()
                         if is_correct in ("y", "yes"):
-                            preloaded_dict.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
+                            self.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
                             print(f"\nAdded {mat_name} to the current material dictionary!\n")
                             break
-                        elif is_correct in ("n", "no"):            
-                break
+                        elif is_correct in ("n", "no"):
+                            break
+                    break
             elif prompt1 in ("n", "no"):
                 break
 
 
 def frequency():
+    """Returns a user specified operating frequency floating point value."""
     while True:
         try:
             freq = float(input(
-                f"At what frequency (Hz) is {main_prompt} operating? "))
+                f"At what frequency (Hz) is the material operating? "))
         except ValueError:
             print("Please type in only numbers for operating frequency...")
         else:
@@ -169,17 +181,17 @@ def calculate_conductance(mat):
                            (PERMITTIVITY * mat[0]))) * sqrt((1 - (1j * alpha_test))))
         up = (omega / beta)
         lam = ((2 * pi) / beta)
-    print(
-        f"\n  While operating at {freq}Hz, {main_prompt} acts as a(n) {conductor_type}!"
-        f"\n\nThe attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-        f"beta has a value of {round(beta, 3)} rad/m.\nThe intrinsic impedance of this "
-        f"{conductor_type} is {nc} ohms.\nThe phase velocity is {round(up, 3)} "
+    print(   # TODO: Add material name back to final print statement
+        f"\n  While operating at {freq}Hz, your specified material acts as a(n) {conductor_type}!"
+        f"\n\n  The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
+        f"beta has a value of {round(beta, 3)} rad/m.\n  The intrinsic impedance of this "
+        f"{conductor_type} is {nc} ohms.\n  The phase velocity is {round(up, 3)} "
         f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
     input('Press any key to continue...')
 
 
 def load_test_values():
-    """generates a sample MaterialDict with sample Material objects"""
+    """Generates a sample MaterialDict with sample Material objects."""
     preloaded_dict = MaterialDict(   # TODO: Put preloaded_dict into function
         {
             "air": (1, 0, 1.00000037),
