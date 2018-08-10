@@ -192,7 +192,7 @@ def calculate_conductance(mat):
 
 def load_test_values():
     """Generates a sample MaterialDict with sample Material objects."""
-    preloaded_dict = MaterialDict(   # TODO: Put preloaded_dict into function
+    preloaded_dict = MaterialDict(
         {
             "air": (1, 0, 1.00000037),
             "fresh water": (80, 5e-4, 0.999992),

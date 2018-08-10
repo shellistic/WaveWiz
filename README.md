@@ -1,24 +1,30 @@
 PyConductor
 ===========
-
-
 Background
 ----------
-This was a project inspired by a university EE assignment given to a colleague of mine, and I am using it (along with other projects) as valuable and dynamic learning tools for Python development (and, unintentionally, electrical engineering). It started just being a simple script that provided functionality on a pre-defined set of materials; now, it also allows you to define and add custom materials to run custom calculations for potential *real world* scenarios!
+This project was inspired by a university EE assignment given to a colleague of mine, and I am using it (along with other projects) as dynamic learning tools for Python development (and, unintentionally, electrical engineering).
 
-*(Double-check the math if you actually use this)*
+What started as a simple script that calculated conductance and propagation parameters on a pre-defined set of materials has now turned into a module that allows you to define and add custom materials for *real world* applications!
 
-I plan on adding additional features to this and cleaning up this project in general over time- accept my apologies for the lack of proper documentation, lack of structure, and other bells and whistles that should definitely be here.
+**Please note:** I, along with my colleague, have verified the calculations within for accuracy; you should always independently verify functionality of any third-party software first before download/use.
 
+Contents
+--------
+#####pyconductor.py
+######Module containing Material and MaterialDict class definitions and methods - Useful in conductivity testing
+#####conductor_calculator.py
+######Example conductance calculation script that imports and uses 'pyconductor'.
 
-What this script actually does
+conductor_calculator.py
 ------------------------------
 
-First, you are prompted to type a **material** *name*.
+First, you are prompted to type either an **option number** or **material** *name*.
 
-A **help** option is available to see the pre-loaded  materials available to test out.
+Select *Option [1]* to see the pre-loaded  materials available to test out.
 
-An **add** option is also available so that you can add custom materials to the dictionary for use in calculations.
+Select *Option [2]* to add custom materials to the dictionary for use in calculations.
+
+Select *Option [3]* to quit the script.
 
 ***Hint**: if a material name given while using 'add' **matches** an **already existing material** within the dictionary, it will simply **update** the values for the key. This means that you can assign custom values to any pre-populated material!*
 
@@ -31,7 +37,7 @@ Once a valid material is given, a function runs that uses the selected material 
    *Air, Fresh Water, Sea Water, Ice, Clay, Saturated Sand, Barium Titanate, Cold Rolled Steel, Purified Iron, Mu Metal, 2-81
    Permalloy, Copper, Gold, Aluminum, Tungsten, Graphite, Diamond, Silicon, Glass, Kiln Dried Wood & PTFE (Teflon).*
 
-Once a **material** has been given, the next prompt will ask you to specify the operating frequency the material is running at. The calculations then process, and **return the relevant results**.
+Once a **material** has been given, the next prompt will ask you to specify the operating frequency the material is running at. The calculations then process, and **print out the relevant results**.
 
 You can then chose to run another calculation by typing (Y)es, or, (N)o to quit the script (gracefully).
 
@@ -39,34 +45,18 @@ You can then chose to run another calculation by typing (Y)es, or, (N)o to quit 
 Changelog
 ---------
 
-- Latest cleanup and fixes:
+######Latest cleanup and fixes:
 
-        - Removed unnecessary string interpolation from print function on lines 176, 185, 195.
-        - Changed __repr__ method on class MaterialDict to more accurately 'represent' MaterialDicts to Python.
-        - Added __str__ method to 'represent' MaterialDicts to others
-        - FIXED: Users can enter blank material names by providing an empty string value using the update() method.
-        - FIXED: If an empty string is given when asked 'Is this correct [Y]es or [N]o?', Python will throw "IndexError: string index out of range".
-        - FIXED: If an empty string is given when asked 'Would you like to add a material...' using the 'add' update() method, Python will throw "IndexError: string index out of range".
-        - Added a 'quit' option to gracefully quit from the main entry loop.
-        - Clarified responses if blank input given to 'main_prompt'.
-        - Clarified main welcome banner and instructions, and cleaned it up by separating the banner text from the input prompt text in the script.
-        - Cleanup of extra spaces/whitespace.
+- Finished refactoring pyconductor into a stand-alone module
 
-- Removed 'project' from title and changed project name to just 'PyConductor' (I'm terrible with naming things)
+- Created new file: *conductor_calculator.py*
 
-- Implemented a new '**add**' option that allows you to add a custom material to the material dictionary, which is now a subclass of the built-in **dict** type.
+- Moved calculation logic into conductor_calculator.py
 
-- You can now make custom calculations using custom defined materials & values by using the new '**add**' feature.
+- Whitespace cleanup & minor optimizations
 
 Future Plans
 ------------
-- Looking into implementing **Decimal()** (from the decimal module) for more precise arithmetic with floating point numbers.
+- Looking into implementing **Decimal()** (from the decimal module) for potentially more precise arithmetic with floating point numbers.
 
-- Would like to see the entire script shortened/refactored where possible.
 
-***
-*Please Note*
-
-I am but a novice coder, and my project(s) will definitely reflect as such.
-
-***
