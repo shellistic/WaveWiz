@@ -10,10 +10,10 @@ What started as a simple script that calculated conductance and propagation para
 
 Contents
 --------
-#####pyconductor.py
-######Module containing Material and MaterialDict class definitions and methods - Useful in conductivity testing
-#####conductor_calculator.py
-######Example conductance calculation script that imports and uses 'pyconductor'.
+##### pyconductor.py
+###### Module containing Material and MaterialDict class definitions and methods - Useful in conductivity testing
+##### conductor_calculator.py
+###### Example conductance calculation script that imports and uses 'pyconductor'.
 
 conductor_calculator.py
 ------------------------------
@@ -45,7 +45,7 @@ You can then chose to run another calculation by typing (Y)es, or, (N)o to quit 
 Changelog
 ---------
 
-######Latest cleanup and fixes:
+###### Latest cleanup and fixes:
 
 - Finished refactoring pyconductor into a stand-alone module
 
