@@ -1,6 +1,6 @@
-import pyconductor
+from pyconductor import load_test_values, calculate_conductance
 
-preloaded_dict = pyconductor.load_test_values()
+preloaded_dict = load_test_values()
 
 while preloaded_dict:
     print(
@@ -19,7 +19,7 @@ while preloaded_dict:
         quit()
     else:
         try:
-            pyconductor.calculate_conductance(preloaded_dict[main_prompt])
+            calculate_conductance(preloaded_dict[main_prompt])
             while True:
                 again_prompt = input(
                     "Would you like to try another calculation? [Y]es or [N]o: ").lower()
