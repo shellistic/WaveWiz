@@ -36,7 +36,6 @@ class Material:   # TODO: implement getters and setters for numerical values
 class MaterialDict(dict):   # TODO: Enhance this class to add functionality on Material Objects
     """
     Class defining Material Dictionaries and their methods for storing groups of Material objects.
-    Subclass of builtin dict class.
     """
 
     def __init__(self, *arg, **kw):
