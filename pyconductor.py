@@ -27,10 +27,7 @@ class Material:   # TODO: implement getters and setters for numerical values
         return f"Material.{self.name}"
 
     def __str__(self):
-        return f"{self.name}: "\
-               f"(\u03B5\u1D63: {self.rel_permit}, "\
-               f"\u03C3: {self.cond_const}, "\
-               f"\u03BC\u1D63: {self.rel_permea})"
+        return f"{self.name}: ({self.rel_permit}, {self.cond_const}, {self.rel_permea})"
 
 
 class MaterialDict(dict):   # TODO: Enhance this class to add functionality on Material Objects
