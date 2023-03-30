@@ -1,62 +1,84 @@
-PyConductor
-===========
-Background
-----------
-This project was inspired by a university EE assignment given to a colleague of mine, and I am using it (along with other projects) as dynamic learning tools for Python development (and, unintentionally, electrical engineering).
+# WaveWhiz
 
-What started as a simple script that calculated conductance and propagation parameters on a pre-defined set of materials has now turned into a module that allows you to define and add custom materials for *real world* applications!
+WaveWhiz is a Python application that calculates the propagation parameters
+of various materials at specific frequencies. It can also classify the
+material as a Lossless Medium, Low-Loss Medium, Good Conductor, or
+Any Medium based on the given parameters.
 
-**Please note:** I, along with my colleague, have verified the calculations within for accuracy; you should always independently verify functionality of any third-party software first before download/use.
+## Purpose and Intended Uses
 
-Contents
---------
-##### pyconductor.py
-###### Module containing Material and MaterialDict class definitions and methods - Useful in conductivity testing
-##### conductor_calculator.py
-###### Example conductance calculation script that imports and uses 'pyconductor'.
+WaveWhiz is designed to help engineers, physicists, and researchers analyze
+the propagation properties of different materials in the context of
+electromagnetic wave propagation.
 
-conductor_calculator.py
-------------------------------
+The application can be used for various purposes, including:
 
-First, you are prompted to type either an **option number** or **material** *name*.
+- Designing antennas and waveguides
+- Evaluating materials for shielding applications
+- Analyzing radio frequency propagation and communication systems
 
-Select *Option [1]* to see the pre-loaded  materials available to test out.
+## How It Works
 
-Select *Option [2]* to add custom materials to the dictionary for use in calculations.
+WaveWhiz uses the following equations to calculate the propagation parameters:
 
-Select *Option [3]* to quit the script.
+1. Complex permittivity (ε)
+   ```math
+   (ε) = εr * ε0 + j * σ / ω
+   ```
+2. Complex permeability (μ)
+   ```math
+   (μ) = μr * μ0
+   ```
+3. Propagation constant (γ)
+   ```math
+   (γ) = √(ω² * μ * ε)
+   ```
+4. Attenuation constant (α)
+   ```math
+   (α) = Re(γ)
+   ```
+5. Phase constant (β)
+   ```math
+   (β) = Im(γ)
+   ```
+6. Wavelength (λ)
+   ```math
+   (λ) = 2π / β
+   ```
+7. Skin depth (δ)
+   ```math
+   (δ) = 1 / α
+   ```
 
-***Hint**: if a material name given while using 'add' **matches** an **already existing material** within the dictionary, it will simply **update** the values for the key. This means that you can assign custom values to any pre-populated material!*
+## How to Use
 
-Once a valid material is given, a function runs that uses the selected material as an argument. Inside the function, conditionals execute different formulas for specific scenarios. The math formulas access the following key values contained in a dictionary, where your selected material is the *key*, and the *values paired* are as follows:
+### As a Standalone Script
 
-{"material_name": [0] = εᵣ (Relative Permittivity), [1] = σ (Conductivity Constant), [2] = μᵣ (Relative Permeability)}
+1. Clone the repository or download the `wavewiz.py` file.
+2. Run the script from the command line or an IDE.
+3. Follow the prompts to select a material,
+   enter the frequency, or add a new material.
+4. View the calculated propagation parameters and material classification.
 
-   *Comes pre-loaded with the following materials:*
+### As a Module
 
-   *Air, Fresh Water, Sea Water, Ice, Clay, Saturated Sand, Barium Titanate, Cold Rolled Steel, Purified Iron, Mu Metal, 2-81
-   Permalloy, Copper, Gold, Aluminum, Tungsten, Graphite, Diamond, Silicon, Glass, Kiln Dried Wood & PTFE (Teflon).*
+1. Import the `wavewiz.py` module into your Python script.
+2. Use the provided functions to calculate the propagation parameters
+   and classify the material as needed.
 
-Once a **material** has been given, the next prompt will ask you to specify the operating frequency the material is running at. The calculations then process, and **print out the relevant results**.
+Example usage:
 
-You can then chose to run another calculation by typing (Y)es, or, (N)o to quit the script (gracefully).
+```python
+import wavewiz
 
+# Run the application interactively
+wavewiz.run_application()
 
-Changelog
----------
+# Use the module's functions as needed
+er, sigma, ur = 80, 3, 1
+omega = 1e7
+alpha, beta, gamma, wavelength, skin_depth = wavewiz.calc_prop_params(er, sigma, ur, omega)
+medium_type = wavewiz.classify_medium(er, sigma, omega)
 
-###### Latest cleanup and fixes:
-
-- Finished refactoring pyconductor into a stand-alone module
-
-- Created new file: *conductor_calculator.py*
-
-- Moved calculation logic into conductor_calculator.py
-
-- Whitespace cleanup & minor optimizations
-
-Future Plans
-------------
-- Looking into implementing **Decimal()** (from the decimal module) for potentially more precise arithmetic with floating point numbers.
-
-
+print(f"Medium type: {medium_type}")
+print(f"α: {alpha}, β: {beta}, γ: {gamma}, Wavelength: {wavelength}, Skin depth: {skin_depth}")
