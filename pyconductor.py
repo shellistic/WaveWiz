@@ -180,22 +180,25 @@ def classify_medium(er: float, sigma: float, omega: float) -> str:
 
     if sigma / (omega * epsilon_r) < 1e-3:
         return "Lossless Medium"
-    elif sigma / (omega * epsilon_r) >= 1e-3 and sigma / (omega * epsilon_r) < 1e-1:
+    if sigma / (omega * epsilon_r) >= 1e-3 and sigma / (omega * epsilon_r) < 1e-1:
         return "Low-Loss Medium"
-    elif sigma / (omega * epsilon_r) >= 1e1:
+    if sigma / (omega * epsilon_r) >= 1e1:
         return "Good Conductor"
-    else:
-        return "Any Medium"
+
+    return "Any Medium"
+
+def add_material():
+    print("Enter the new material properties:")
+    name = input("Material name: ")
+    er = float(input("Relative permittivity (εr): "))
+    sigma = float(input("Conductivity (σ) in S/m: "))
+    ur = float(input("Relative permeability (μr): "))
+    MATERIALS[name] = (er, sigma, ur)
 
 def run_application():
-    """
-    Runs the application interactively, prompting the user to select a
-    material and enter a frequency, then displays the calculated
-    propagation parameters and material classification.
-    """
     er, sigma, ur = get_material_properties()
     omega = get_frequency()
-    
+
     alpha, beta, gamma, wavelength, skin_depth = calculate_propagation_parameters(er, sigma, ur, omega)
     medium_type = classify_medium(er, sigma, omega)
 
@@ -208,4 +211,18 @@ def run_application():
     print(f"Skin depth: {skin_depth:.4e} m")
 
 if __name__ == "__main__":
-    run_application()
+    while True:
+        print("\nOptions:")
+        print("1. Calculate propagation parameters and classify medium")
+        print("2. Add a new material")
+        print("3. Exit")
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == "1":
+            run_application()
+        elif choice == "2":
+            add_material()
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice, please try again.")
