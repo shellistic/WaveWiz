@@ -1,5 +1,5 @@
 """
-pyconductor
+WaveWiz
 -------------------------
 
 This module provides functions for calculating the propagation
@@ -17,11 +17,11 @@ get_material_properties()
 get_frequency()
     Prompts the user to enter the angular frequency (ω) in rad/s.
 
-calculate_propagation_parameters(er, sigma, ur, omega)
+calc_prop_params(er, sigma, ur, omega)
     Calculates the propagation parameters α, β, γ, wavelength, and
     skin depth for the given material properties and frequency.
 
-classify_medium(er, sigma, ur, omega)
+classify_medium(er, sigma, omega)
     Classifies the material as a Lossless Medium, Low-Loss Medium,
     Good Conductor, or Any Medium based on the given parameters.
 
@@ -100,7 +100,7 @@ def get_frequency():
             print("Invalid input. Please enter a number.")
     return omega
 
-def calculate_propagation_parameters(
+def calc_prop_params(
         er: float, sigma: float, ur: float, omega: float) -> complex:
     """
     Calculates the propagation parameters α, β, γ, wavelength, and
@@ -199,7 +199,7 @@ def run_application():
     er, sigma, ur = get_material_properties()
     omega = get_frequency()
 
-    alpha, beta, gamma, wavelength, skin_depth = calculate_propagation_parameters(er, sigma, ur, omega)
+    alpha, beta, gamma, wavelength, skin_depth = calc_prop_params(er, sigma, ur, omega)
     medium_type = classify_medium(er, sigma, omega)
 
     print(f"\nThe material at the specified frequency is a {medium_type}.")
