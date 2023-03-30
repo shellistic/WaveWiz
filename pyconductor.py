@@ -1,216 +1,211 @@
-from math import pi, sqrt
+"""
+pyconductor
+-------------------------
+
+This module provides functions for calculating the propagation
+parameters of various materials at specific frequencies.
+It can also classify the material as a Lossless Medium,
+Low-Loss Medium, Good Conductor, or Any Medium based on the given
+parameters.
+
+Functions
+---------
+get_material_properties()
+    Prompts the user to select a material from a predefined dictionary
+    and returns its properties.
+
+get_frequency()
+    Prompts the user to enter the angular frequency (ω) in rad/s.
+
+calculate_propagation_parameters(er, sigma, ur, omega)
+    Calculates the propagation parameters α, β, γ, wavelength, and
+    skin depth for the given material properties and frequency.
+
+classify_medium(er, sigma, ur, omega)
+    Classifies the material as a Lossless Medium, Low-Loss Medium,
+    Good Conductor, or Any Medium based on the given parameters.
+
+run_application()
+    Runs the application as a standalone script, prompting the user
+    to select a material and enter a frequency, then displays the
+    calculated propagation parameters and material classification.
+"""
 
 
-PERMITTIVITY = 8.854e-12
-PERMEABILITY = 1.26e-06
+import cmath
 
+MATERIALS = {
+    "air": (1, 0, 1.00000037),
+    "fresh water": (80, 5e-4, 0.999992),
+    "sea water": (80, 3, 1),
+    "ice": (3.5, 1e-5, 1),
+    "clay": (20, 5, 1),
+    "saturated sand": (30, 1e-4, 1),
+    "barium titanate": (3279, 1e-6, 1),
+    "cold rolled steel": (1, 1e-7, 100),
+    "purified iron": (1, 1e-7, 5e3),
+    "mu metal": (1, 1.6e6, 2e5),
+    "2-81 permalloy": (1, 1e2, 1e6),
+    "copper": (1, 5.96e7, 0.999994),
+    "gold": (1, 4.1e7, 1),
+    "aluminium": (1, 3.5e7, 1.000022),
+    "tungsten": (1, 1.79e7, 1),
+    "graphite": (12.5, 2e5, 1),
+    "diamond": (7.5, 1e-13, 0.99999975),
+    "silicon": (11.68, 1.56e-3, 1),
+    "glass": (65, 1e-15, 1),
+    "kiln dried wood": (4, 1e-15, 1.000000435),
+    "ptfe": (2.1, 1e-25, 1)
+}
 
-class Material:   # TODO: implement getters and setters for numerical values
+def get_material_properties():
     """
-    Class defining Material objects for the purpose of electrical conductivity testing.
+    Prompts the user to select a material from a
+    predefined dictionary and returns its properties.
 
-    Materials need to be instantiated with the following parameters:
-
-    name == Name for the material
-    rel_permit == εᵣ == Relative Permittivity
-    cond_const == σ  == Conductivity Constant
-    rel_permea == μᵣ == Relative Permeability
+    Returns
+    -------
+    float
+        Relative permittivity (εr) of the selected material.
+    float
+        Conductivity (σ) of the selected material in S/m.
+    float
+        Relative permeability (μr) of the selected material.
     """
+    print("Available materials:")
+    for material in MATERIALS.keys():
+        print(material)
 
-    def __init__(self, name, rel_permit, cond_const, rel_permea):
-        self.name = name
-        self.rel_permit = rel_permit
-        self.cond_const = cond_const
-        self.rel_permea = rel_permea
+    selected_material = input("Select a material from the list: ").lower()
+    while selected_material not in MATERIALS:
+        print("Invalid material. Please try again.")
+        selected_material = input("Select a material from the list: ").lower()
 
-    def __repr__(self):
-        return f"Material.{self.name}"
+    return MATERIALS[selected_material]
 
-    def __str__(self):
-        return f"{self.name}: ({self.rel_permit}, {self.cond_const}, {self.rel_permea})"
-
-
-class MaterialDict(dict):   # TODO: Enhance this class to add functionality on Material Objects
+def get_frequency():
     """
-    Class defining Material Dictionaries and their methods for storing groups of Material objects.
+    Prompts the user to enter the angular frequency (ω) in rad/s.
+
+    Returns
+    -------
+    float
+        Angular frequency (ω) in rad/s.
     """
-
-    def __init__(self, *arg, **kw):
-        super().__init__(*arg, **kw)
-
-    def __repr__(self):
-        return "MaterialDict object"
-
-    def __str__(self):
-        if len(self) == 0:
-            return "empty material dictionary"
-        else:
-            return f"material dictionary containing {len(self)} material(s)"
-
-    def update(self, *args, **kwargs):
-        """Logic to store MaterialDict object"""
-        if args:
-            if len(args) > 1:
-                raise TypeError(
-                    f"update expected at most 1 arguments, received {len(args)}")
-            other = dict(args[0])
-            for key in other:
-                self[key] = other[key]
-        for key in kwargs:
-            self[key] = kwargs[key]
-
-    def count(self):
-        """Returns a count of materials currently inside the MaterialDict object."""
-        return len(self)
-
-    def addmat(self):
-        """
-        Gathers required material values from user;
-        Uses update() class method to add the material based on the values provided.
-        """
-        while True:
-            prompt1 = input(
-                "Would you like to add a material to the current material dictionary?\n"
-                "[Y]es or [N]o ").lower()
-            if prompt1 in ("y", "yes"):
-                while True:
-                    while True:
-                        mat_name = input(
-                            "Adding a material...\nWhat is your material named? ").lower()
-                        if mat_name == "":
-                            print("\nPlease type in a material name\n")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_rpermit = float(input(
-                                f"What is the relative permittivity (\u03B5\u1D63) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a relative permittivity, or it is invalid...\n"
-                                  "Please use only numbers for (\u03B5\u1D63)")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_cconst = float(input(
-                                f"What is the conductivity constant (\u03C3) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a conductivity constant, or it is invalid...\n"
-                                  "Please use only numbers for (\u03C3)")
-                        else:
-                            break
-                    while True:
-                        try:
-                            mat_rpermea = float(input(
-                                f"What is the relative permeability (\u03BC\u1D63) of {mat_name}? "))
-                        except ValueError:
-                            print(f"You did not specify a relative permeability, or it is invalid...\n"
-                                  "Please use only numbers for (\u03BC\u1D63)")
-                        else:
-                            break
-                    print(
-                        f"You are adding:\n{mat_name}\nwith a \u03B5\u1D63 of {mat_rpermit},\n"
-                        f"\u03C3 of {mat_cconst},\nand a \u03BC\u1D63 of {mat_rpermea}\n")
-                    while True:
-                        is_correct = input("Is this correct ([Y]es or [N]o)?\n").lower()
-                        if is_correct in ("y", "yes"):
-                            self.update({mat_name: (mat_rpermit, mat_cconst, mat_rpermea)})
-                            print(f"\nAdded {mat_name} to the current material dictionary!\n")
-                            break
-                        elif is_correct in ("n", "no"):
-                            break
-                    break
-            elif prompt1 in ("n", "no"):
-                break
-
-
-def frequency():
-    """Returns a user specified operating frequency floating point value."""
     while True:
         try:
-            freq = float(input(
-                f"At what frequency (Hz) is the material operating? "))
+            omega = float(input("Enter the angular frequency ω (rad/s): "))
+            break
         except ValueError:
-            print("Please type in only numbers for operating frequency...")
-        else:
-            return freq
+            print("Invalid input. Please enter a number.")
+    return omega
 
+def calculate_propagation_parameters(
+        er: float, sigma: float, ur: float, omega: float) -> complex:
+    """
+    Calculates the propagation parameters α, β, γ, wavelength, and
+    skin depth for the given material properties and frequency.
 
-def calculate_conductance(mat):
+    Parameters
+    ----------
+    er : float
+        Relative permittivity (εr) of the material.
+    sigma : float
+        Conductivity (σ) of the material in S/m.
+    ur : float
+        Relative permeability (μr) of the material.
+    omega : float
+        Angular frequency (ω) in rad/s.
+
+    Returns
+    -------
+    complex
+        Attenuation constant (α) in Np/m.
+    complex
+        Phase constant (β) in rad/m.
+    complex
+        Propagation constant (γ).
+    complex
+        Wavelength in meters.
+    complex
+        Skin depth in meters.
     """
-    Takes a material as an argument;
-    Prints the results of the defined equations based on operating frequency.
-    """
-    freq = frequency()
-    omega = 2 * pi * freq * mat[0] * PERMITTIVITY  # w
-    alpha_test = mat[1] / omega
-    if alpha_test == 0:
-        conductor_type = "lowless medium"
-        alpha = 0
-        beta = (omega / (sqrt(PERMEABILITY * mat[2] * PERMITTIVITY * mat[0])))
-        nc = ((mat[2] * PERMEABILITY) / (PERMITTIVITY * mat[0]))
-        up = (1 / (mat[0] * PERMITTIVITY * mat[2] * PERMEABILITY))
-        lam = float(up / freq)
-    elif alpha_test <= 0.01:
-        conductor_type = "low-less medium"
-        alpha = ((mat[1] / 2) * sqrt((PERMEABILITY * mat[2]) / (PERMITTIVITY * mat[0])))
-        beta = (omega / (sqrt(PERMEABILITY * mat[2] * PERMITTIVITY * mat[0])))
-        nc = ((mat[2] * PERMEABILITY) / (PERMITTIVITY * mat[0]))
-        up = (1 / (mat[0] * PERMITTIVITY * mat[2] * PERMEABILITY))
-        lam = float(up / freq)
-    elif alpha_test >= 100:
-        conductor_type = "good conductor"
-        alpha = sqrt(pi * freq * PERMEABILITY * mat[2] * mat[1])
-        beta = sqrt(pi * freq * PERMEABILITY * mat[2] * mat[1])
-        nc = complex((1 + 1j) * (alpha / mat[1]))
-        up = sqrt(4 * pi * freq * PERMEABILITY * mat[2] * mat[1])
-        lam = up / freq
+    epsilon_0 = 8.8541878128e-12  # Vacuum permittivity in F/m
+    mu_0 = 4 * cmath.pi * 1e-7  # Vacuum permeability in H/m
+
+    epsilon_r = er * epsilon_0
+    mu_r = ur * mu_0
+
+    alpha = omega * cmath.sqrt(
+        (epsilon_r * mu_r) / 2
+        ) * cmath.sqrt(cmath.sqrt(1 + (sigma / (omega * epsilon_r))**2) - 1)
+
+    beta = omega * cmath.sqrt(
+        (epsilon_r * mu_r) / 2
+        ) * cmath.sqrt(cmath.sqrt(1 + (sigma / (omega * epsilon_r))**2) + 1)
+
+    gamma = alpha + 1j * beta
+
+    wavelength = 2 * cmath.pi / beta
+
+    if alpha.real == 0:
+        skin_depth = float('inf')
     else:
-        conductor_type = "any medium"
-        alpha = (omega *
-                 (sqrt((PERMEABILITY * mat[2] * PERMITTIVITY * mat[0]) *
-                       sqrt(1 + (alpha_test ** 2)) - 1)))
-        beta = (omega *
-                (sqrt((PERMEABILITY * mat[2] * PERMITTIVITY * mat[0]) *
-                      sqrt(1 + (alpha_test ** 2)) + 1)))
-        nc = complex((sqrt((PERMEABILITY * mat[2]) /
-                           (PERMITTIVITY * mat[0]))) * sqrt((1 - (1j * alpha_test))))
-        up = (omega / beta)
-        lam = ((2 * pi) / beta)
-    print(   # TODO: Add material name back to final print statement
-        f"\n  While operating at {freq}Hz, your specified material acts as a(n) {conductor_type}!"
-        f"\n\n  The attenuation constant, alpha, has a value of {round(alpha, 3)} Np/m, and "
-        f"beta has a value of {round(beta, 3)} rad/m.\n  The intrinsic impedance of this "
-        f"{conductor_type} is {nc} ohms.\n  The phase velocity is {round(up, 3)} "
-        f"meters per second with a wavelength of {round(lam, 3)} meters.\n")
-    input('Press any key to continue...')
+        skin_depth = 1 / alpha
 
+    return alpha, beta, gamma, wavelength, skin_depth
 
-def load_test_values():
-    """Generates a sample MaterialDict with sample Material objects."""
-    preloaded_dict = MaterialDict(
-        {
-            "air": (1, 0, 1.00000037),
-            "fresh water": (80, 5e-4, 0.999992),
-            "sea water": (80, 3, 1),
-            "ice": (3.5, 1e-5, 1),
-            "clay": (20, 5, 1),
-            "saturated sand": (30, 1e-4, 1),
-            "barium titanate": (3279, 1e-6, 1),
-            "cold rolled steel": (1, 1e-7, 100),
-            "purified iron": (1, 1e-7, 5e3),
-            "mu metal": (1, 1.6e6, 2e5),
-            "2-81 permalloy": (1, 1e2, 1e6),
-            "copper": (1, 5.96e7, 0.999994),
-            "gold": (1, 4.1e7, 1),
-            "aluminium": (1, 3.5e7, 1.000022),
-            "tungsten": (1, 1.79e7, 1),
-            "graphite": (12.5, 2e5, 1),
-            "diamond": (7.5, 1e-13, 0.99999975),
-            "silicon": (11.68, 1.56e-3, 1),
-            "glass": (65, 1e-15, 1),
-            "kiln dried wood": (4, 1e-15, 1.000000435),
-            "ptfe": (2.1, 1e-25, 1)
-        }
-    )
-    return preloaded_dict
+def classify_medium(er: float, sigma: float, omega: float) -> str:
+    """
+    Classifies the material as a Lossless Medium, Low-Loss Medium,
+    Good Conductor, or Any Medium based on the given parameters.
+
+    Parameters
+    ----------
+    er : float
+        Relative permittivity (εr) of the material.
+    sigma : float
+        Conductivity (σ) of the material in S/m.
+    omega : float
+        Angular frequency (ω) in rad/s.
+
+    Returns
+    -------
+    str
+        Classification of the material: Lossless Medium,
+        Low-Loss Medium, Good Conductor, or Any Medium.
+    """
+    epsilon_0 = 8.8541878128e-12  # Vacuum permittivity in F/m
+    epsilon_r = er * epsilon_0
+
+    if sigma / (omega * epsilon_r) < 1e-3:
+        return "Lossless Medium"
+    elif sigma / (omega * epsilon_r) >= 1e-3 and sigma / (omega * epsilon_r) < 1e-1:
+        return "Low-Loss Medium"
+    elif sigma / (omega * epsilon_r) >= 1e1:
+        return "Good Conductor"
+    else:
+        return "Any Medium"
+
+def run_application():
+    """
+    Runs the application interactively, prompting the user to select a
+    material and enter a frequency, then displays the calculated
+    propagation parameters and material classification.
+    """
+    er, sigma, ur = get_material_properties()
+    omega = get_frequency()
+    
+    alpha, beta, gamma, wavelength, skin_depth = calculate_propagation_parameters(er, sigma, ur, omega)
+    medium_type = classify_medium(er, sigma, omega)
+
+    print(f"\nThe material at the specified frequency is a {medium_type}.")
+    print("Propagation Parameters:")
+    print(f"α (attenuation constant): {alpha.real:.4e} Np/m")
+    print(f"β (phase constant): {beta.real:.4e} rad/m")
+    print(f"γ (propagation constant): {gamma:.4e}")
+    print(f"Wavelength: {wavelength:.4e} m")
+    print(f"Skin depth: {skin_depth:.4e} m")
+
+if __name__ == "__main__":
+    run_application()
