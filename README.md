@@ -1,13 +1,13 @@
-# WaveWhiz
+# WaveWiz
 
-WaveWhiz is a Python application that calculates the propagation parameters
+WaveWiz is a Python application that calculates the propagation parameters
 of various materials at specific frequencies. It can also classify the
 material as a Lossless Medium, Low-Loss Medium, Good Conductor, or
 Any Medium based on the given parameters.
 
 ## Purpose and Intended Uses
 
-WaveWhiz is designed to help engineers, physicists, and researchers analyze
+WaveWiz is designed to help engineers, physicists, and researchers analyze
 the propagation properties of different materials in the context of
 electromagnetic wave propagation.
 
@@ -19,7 +19,7 @@ The application can be used for various purposes, including:
 
 ## How It Works
 
-WaveWhiz uses the following equations to calculate the propagation parameters:
+WaveWiz uses the following equations to calculate the propagation parameters:
 
 1. Complex permittivity (ε)
    ```math

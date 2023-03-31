@@ -188,6 +188,9 @@ def classify_medium(er: float, sigma: float, omega: float) -> str:
     return "Any Medium"
 
 def add_material():
+    """
+    Adds a new material to the dictionary of predefined materials.
+    """
     print("Enter the new material properties:")
     name = input("Material name: ")
     er = float(input("Relative permittivity (εr): "))
@@ -196,6 +199,9 @@ def add_material():
     MATERIALS[name] = (er, sigma, ur)
 
 def run_application():
+    """
+    Runs the application interactively, and prints the results to stdout.
+    """
     er, sigma, ur = get_material_properties()
     omega = get_frequency()
 
@@ -204,11 +210,12 @@ def run_application():
 
     print(f"\nThe material at the specified frequency is a {medium_type}.")
     print("Propagation Parameters:")
-    print(f"α (attenuation constant): {alpha.real:.4e} Np/m")
-    print(f"β (phase constant): {beta.real:.4e} rad/m")
-    print(f"γ (propagation constant): {gamma:.4e}")
-    print(f"Wavelength: {wavelength:.4e} m")
-    print(f"Skin depth: {skin_depth:.4e} m")
+    print(f"α (attenuation constant): {alpha.real:.4g} Np/m")
+    print(f"β (phase constant): {beta.real:.4g} rad/m")
+    print(f"γ (propagation constant): {gamma.real:+.4g}{gamma.imag:+.4g}j")
+    print(f"Wavelength: {wavelength.real:.4g} m")
+    print(f"Skin depth: {skin_depth.real:.4g} m")
+
 
 if __name__ == "__main__":
     while True:
